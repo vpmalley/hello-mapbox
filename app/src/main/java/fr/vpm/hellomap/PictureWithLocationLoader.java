@@ -49,13 +49,15 @@ public class PictureWithLocationLoader {
         MediaStore.Images.ImageColumns.DESCRIPTION
     };
     final Cursor cursor = context.getContentResolver()
-        .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
+        .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, MediaStore.Images.ImageColumns.LATITUDE + " IS NOT NULL",
             null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
     if (cursor.moveToFirst()) {
       Log.d("picloader", cursor.getString(2) + cursor.getString(3));
       p.setStoreId(cursor.getString(0));
-      p.setLatitude(Double.valueOf(cursor.getString(2)));
-      p.setLongitude(Double.valueOf(cursor.getString(3)));
+      if ((cursor.getString(3) != null) && (cursor.getString(4) != null)) {
+        p.setLatitude(Double.valueOf(cursor.getString(2)));
+        p.setLongitude(Double.valueOf(cursor.getString(3)));
+      }
       p.setDescription(cursor.getString(4));
     }
     return p;
