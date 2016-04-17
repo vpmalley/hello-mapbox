@@ -28,6 +28,7 @@ public class MapActivity extends AppCompatActivity {
             .title("cool views here")
             .getThis();
         mapboxMap.addMarker(markerOptions);
+        mapboxMap.setOnMapLongClickListener(new MapLongClickListener(MapActivity.this));
       }
     });
   }
