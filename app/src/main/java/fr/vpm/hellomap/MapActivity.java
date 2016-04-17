@@ -1,7 +1,9 @@
 package fr.vpm.hellomap;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -11,7 +13,9 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 public class MapActivity extends AppCompatActivity {
 
-  MapView mapview;
+  private MapView mapview;
+  private MapboxMap mapboxMap;
+  private PictureWithLocationLoader picLoader;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -22,19 +26,37 @@ public class MapActivity extends AppCompatActivity {
     mapview.getMapAsync(new OnMapReadyCallback() {
       @Override
       public void onMapReady(MapboxMap mapboxMap) {
-
-        MarkerOptions markerOptions = new MarkerOptions()
-            .position(new LatLng(48.19866,-69.86450))
-            .title("cool views here")
-            .getThis();
-        mapboxMap.addMarker(markerOptions);
+        MapActivity.this.mapboxMap = mapboxMap;
         mapboxMap.setOnMapLongClickListener(new MapLongClickListener(MapActivity.this));
+
+        picLoader = new PictureWithLocationLoader(MapActivity.this);
+        addMarkerForPicture();
       }
     });
   }
 
+  private void addMarkerForPicture() {
+    Picture p = picLoader.getLatestPics();
+    if (p != null) {
+      MarkerOptions markerOptions = new MarkerOptions()
+          .position(new LatLng(p.getLatitude(), p.getLongitude()))
+          .title("cool views here: " + p.getDescription())
+          .getThis();
+      mapboxMap.addMarker(markerOptions);
+    }
+  }
+
   private void findViews() {
     mapview = (MapView) findViewById(R.id.mapview);
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode,
+                                         String permissions[], int[] grantResults) {
+    Log.d("permissions", String.valueOf(requestCode) + String.valueOf(grantResults[0]));
+    if ((3 == requestCode) && (PackageManager.PERMISSION_GRANTED == grantResults[0])) {
+      addMarkerForPicture();
+    }
   }
 
   @Override
