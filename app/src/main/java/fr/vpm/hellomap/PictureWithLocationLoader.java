@@ -3,6 +3,7 @@ package fr.vpm.hellomap;
 import android.app.Activity;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +36,10 @@ public class PictureWithLocationLoader {
             null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
     cursor.moveToFirst();
     List<Picture> pics = new ArrayList<>();
+    Log.d("pictures", String.valueOf(cursor.getCount()));
     while (cursor.moveToNext()) {
       p.setStoreId(cursor.getString(0));
-      if ((cursor.getString(3) != null) && (cursor.getString(4) != null)) {
+      if ((cursor.getString(2) != null) && (cursor.getString(3) != null)) {
         p.setLatitude(Double.valueOf(cursor.getString(2)));
         p.setLongitude(Double.valueOf(cursor.getString(3)));
       }

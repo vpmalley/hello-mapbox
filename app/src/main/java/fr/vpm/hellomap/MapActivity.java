@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -23,6 +26,7 @@ public class MapActivity extends AppCompatActivity implements PictureLoadedListe
   private MapView mapview;
   private MapboxMap mapboxMap;
   private PictureWithLocationLoader picLoader;
+  private ImageView picture;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class MapActivity extends AppCompatActivity implements PictureLoadedListe
   }
 
   private void findViews() {
+    picture = (ImageView) findViewById(R.id.picture);
     mapview = (MapView) findViewById(R.id.mapview);
   }
 
@@ -55,11 +60,13 @@ public class MapActivity extends AppCompatActivity implements PictureLoadedListe
   public void onPicturesWithLocationLoaded(List<Picture> pictures) {
     for (Picture p : pictures) {
       if (p != null) {
+        Log.d("pictures", "loading pic : " + p.getDescription());
         MarkerOptions markerOptions = new MarkerOptions()
             .position(new LatLng(p.getLatitude(), p.getLongitude()))
             .title("cool views here: " + p.getDescription())
             .getThis();
         mapboxMap.addMarker(markerOptions);
+        Glide.with(this).load(p.getDescription()).into(picture);
       }
     }
   }
