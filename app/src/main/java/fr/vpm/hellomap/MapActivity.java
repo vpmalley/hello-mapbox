@@ -7,9 +7,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ImageView;
+import android.widget.ListView;
 
-import com.bumptech.glide.Glide;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -23,18 +22,18 @@ public class MapActivity extends AppCompatActivity implements PictureLoadedListe
   private static final int REQ_READ_PICS = 12;
   public static final String PERM_READ_PICS = Manifest.permission.READ_EXTERNAL_STORAGE;
 
-  private MapView mapview;
+  private MapView mapView;
   private MapboxMap mapboxMap;
   private PictureWithLocationLoader picLoader;
-  private ImageView picture;
+  private ListView picturesView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_map);
     findViews();
-    mapview.onCreate(savedInstanceState);
-    mapview.getMapAsync(new OnMapReadyCallback() {
+    mapView.onCreate(savedInstanceState);
+    mapView.getMapAsync(new OnMapReadyCallback() {
       @Override
       public void onMapReady(MapboxMap mapboxMap) {
         MapActivity.this.mapboxMap = mapboxMap;
@@ -49,8 +48,8 @@ public class MapActivity extends AppCompatActivity implements PictureLoadedListe
   }
 
   private void findViews() {
-    picture = (ImageView) findViewById(R.id.picture);
-    mapview = (MapView) findViewById(R.id.mapview);
+    picturesView = (ListView) findViewById(R.id.pictures);
+    mapView = (MapView) findViewById(R.id.mapview);
   }
 
   private void loadPicturesWithLocations() {
@@ -66,8 +65,8 @@ public class MapActivity extends AppCompatActivity implements PictureLoadedListe
             .title("cool views here: " + p.getDescription())
             .getThis();
         mapboxMap.addMarker(markerOptions);
-        Glide.with(this).load(p.getDescription()).into(picture);
       }
+      picturesView.setAdapter(new PictureAdapter(this, R.layout.picture_list_item, pictures));
     }
   }
 
@@ -96,30 +95,30 @@ public class MapActivity extends AppCompatActivity implements PictureLoadedListe
   @Override
   protected void onResume() {
     super.onResume();
-    mapview.onResume();
+    mapView.onResume();
   }
 
   @Override
   protected void onPause() {
     super.onPause();
-    mapview.onPause();
+    mapView.onPause();
   }
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    mapview.onSaveInstanceState(outState);
+    mapView.onSaveInstanceState(outState);
   }
 
   @Override
   public void onLowMemory() {
     super.onLowMemory();
-    mapview.onLowMemory();
+    mapView.onLowMemory();
   }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
-    mapview.onDestroy();
+    mapView.onDestroy();
   }
 }

@@ -17,12 +17,11 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:text="Pick 1 to 3 pictures among these"/>
 
-    <ImageView
-        android:id="@+id/picture"
+    <ListView
+        android:id="@+id/pictures"
         android:layout_width="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        />
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapview"
