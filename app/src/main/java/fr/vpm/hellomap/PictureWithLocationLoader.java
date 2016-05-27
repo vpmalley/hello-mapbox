@@ -23,7 +23,6 @@ public class PictureWithLocationLoader {
   }
 
   public void getLatestPics() {
-    Picture p = new Picture();
     String[] projection = new String[] {
         MediaStore.Images.ImageColumns._ID,
         MediaStore.Images.ImageColumns.DATE_TAKEN,
@@ -32,12 +31,12 @@ public class PictureWithLocationLoader {
         MediaStore.Images.ImageColumns.DATA
     };
     final Cursor cursor = context.getContentResolver()
-        .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, MediaStore.Images.ImageColumns.LATITUDE + " IS NOT NULL",
-            null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
-    cursor.moveToFirst();
+        .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
+            null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC limit 10");
     List<Picture> pics = new ArrayList<>();
     Log.d("pictures", String.valueOf(cursor.getCount()));
     while (cursor.moveToNext()) {
+      Picture p = new Picture();
       p.setStoreId(cursor.getString(0));
       if ((cursor.getString(2) != null) && (cursor.getString(3) != null)) {
         p.setLatitude(Double.valueOf(cursor.getString(2)));

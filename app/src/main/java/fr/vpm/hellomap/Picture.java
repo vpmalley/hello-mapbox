@@ -1,5 +1,8 @@
 package fr.vpm.hellomap;
 
+import android.net.Uri;
+import android.provider.MediaStore;
+
 /**
  * Created by vince on 17/04/16.
  */
@@ -40,5 +43,9 @@ public class Picture {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public Uri getUri() {
+    return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, storeId);
   }
 }

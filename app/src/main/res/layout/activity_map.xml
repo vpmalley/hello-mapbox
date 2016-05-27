@@ -17,7 +17,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:text="Pick 1 to 3 pictures among these"/>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/pictures"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -32,6 +32,5 @@
         mapbox:center_latitude="48.1960"
         mapbox:center_longitude="-69.8647"
         mapbox:zoom="3"/>
-
 
 </LinearLayout>
