@@ -34,6 +34,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureViewHolder> {
     View v = LayoutInflater.from(parent.getContext())
         .inflate(resource, parent, false);
     ImageView pictureView = (ImageView) v.findViewById(R.id.picture);
+    pictureView.setOnClickListener(new OnPictureClickListener());
     return new PictureViewHolder(pictureView);
   }
 
