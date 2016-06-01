@@ -12,6 +12,7 @@ public class Picture {
   private double latitude;
   private double longitude;
   private String description;
+  private boolean picked;
 
   public String getStoreId() {
     return storeId;
@@ -47,5 +48,13 @@ public class Picture {
 
   public Uri getUri() {
     return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, storeId);
+  }
+
+  public void setPicked(boolean picked) {
+    this.picked = picked;
+  }
+
+  public boolean isPicked() {
+    return picked;
   }
 }

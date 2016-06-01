@@ -34,8 +34,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureViewHolder> {
     View v = LayoutInflater.from(parent.getContext())
         .inflate(resource, parent, false);
     ImageView pictureView = (ImageView) v.findViewById(R.id.picture);
-    pictureView.setOnClickListener(new OnPictureClickListener());
-    return new PictureViewHolder(pictureView);
+    return new PictureViewHolder(v, pictureView);
   }
 
   @Override
@@ -45,10 +44,41 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureViewHolder> {
         .with(activity)
         .load(p.getUri())
         .into(pictureHolder.getImageView());
+
+    pictureHolder.getImageView().setOnClickListener(new OnPictureClickListener(pictureHolder));
   }
 
   @Override
   public int getItemCount() {
     return pictures.size();
   }
+
+
+  public class OnPictureClickListener implements View.OnClickListener {
+
+    private final PictureViewHolder pictureViewHolder;
+
+    public OnPictureClickListener(PictureViewHolder pictureViewHolder) {
+      this.pictureViewHolder = pictureViewHolder;
+    }
+
+    @Override
+    public void onClick(View view) {
+      Picture picture = getPicture();
+      picture.setPicked(!picture.isPicked());
+      if (picture.isPicked()) {
+        view.setBackgroundColor(view.getResources().getColor(R.color.mapbox_blue));
+      } else {
+        view.setBackgroundColor(view.getResources().getColor(R.color.transparent));
+      }
+    }
+
+    private Picture getPicture() {
+      int adapterPosition = pictureViewHolder.getAdapterPosition();
+      return PictureAdapter.this.pictures.get(adapterPosition);
+    }
+  }
+
+
+
 }
