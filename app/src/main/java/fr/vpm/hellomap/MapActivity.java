@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Button;
 
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -29,6 +30,7 @@ public class MapActivity extends AppCompatActivity implements PictureLoadedListe
   private MapboxMap mapboxMap;
   private PictureWithLocationLoader picLoader;
   private RecyclerView picturesView;
+  private Button nextButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class MapActivity extends AppCompatActivity implements PictureLoadedListe
   private void findViews() {
     picturesView = (RecyclerView) findViewById(R.id.pictures);
     mapView = (MapView) findViewById(R.id.mapview);
+    nextButton = (Button) findViewById(R.id.next);
   }
 
   private void loadPicturesWithLocations() {
